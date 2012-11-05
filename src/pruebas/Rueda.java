@@ -10,27 +10,30 @@ public class Rueda {
 	private int rodaduraKm = 0;
 	private boolean pinchada = false;
 	private boolean cambiar = false;
+	private float presionPSI;
 
 	Rueda(int diametroPulgadas, int anchuraNominalMm,
-			int ratioAspectoPc) {
+			int ratioAspectoPc, float presionPSI) {
 		this.diametroPulgadas = diametroPulgadas;
 		this.anchuraNominalMm = anchuraNominalMm;
 		this.ratioAspectoPc = ratioAspectoPc;
+		this.presionPSI = presionPSI;
 	}
 
 	// Rueda Estándar
 	Rueda() {
-		this(16,205,55);
+		this(16,205,55,2.2f);
 	}
 
-	public void rodar(int km) throws RuedaPinchadaException  {
-		if (! pinchada) {
+	public void rodar(int km) throws RuedaPinchadaException {
+		if (!pinchada) {
 			this.rodaduraKm += km;
 			if (rodaduraKm >= limiteKm) {
 				cambiar = true;
 			}
 		} else
-			throw new RuedaPinchadaException("Esta pinchada, no puedes rodar!");
+			throw new RuedaPinchadaException("Esta pinchada, no puedes rodar!",
+					presionPSI, 60);
 	}
 
 	public void pinchar() {
@@ -52,6 +55,7 @@ public class Rueda {
 			System.out.println("Km: "+rodaduraKm+" excedidos "+ (-difKm));
 		System.out.println("Pinchada: "+pinchada);
 		System.out.println("Cambiar: "+cambiar);
+		System.out.println("Presio: " + presionPSI);
 	}
 	
 	public void println() {
@@ -60,7 +64,7 @@ public class Rueda {
 	}
 	
 	public static void main(String[] args) {
-		Rueda r1=new Rueda(), r2=new Rueda(165,14,175);
+		Rueda r1=new Rueda(), r2=new Rueda(165,14,175,2.2f);
 		try {
 			r1.rodar(75000);
 			r1.pinchar();
